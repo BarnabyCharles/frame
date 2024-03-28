@@ -1,6 +1,12 @@
 package config
 
 type AppConfig struct {
+	Name     string `json:"Name"`
+	ListenOn string `json:"ListenOn"`
+	Etcd     struct {
+		Hosts []string `json:"Hosts"`
+		Key   string   `json:"Key"`
+	} `json:"Etcd"`
 	Mysql MysqlConfig `yaml:"Mysql" mapstructure:"Mysql"`
 	Nacos NacosConfig `yaml:"Nacos" json:"Nacos" mapstructure:"Nacos"`
 	Redis RedisConfig `json:"Redis" mapstruture:"Redis"`
