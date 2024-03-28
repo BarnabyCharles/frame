@@ -30,17 +30,10 @@ func InitMysql(serverName, group string) error {
 		mysqConfig.Mysql.Port,
 		mysqConfig.Mysql.Database,
 	)
-	db, err := gorm.Open(mysql.Open(dsn))
+	DB, err = gorm.Open(mysql.Open(dsn))
 	if err != nil {
 		return errors.New("连接数据库失败！" + err.Error())
 	}
-
-	sql, err := db.DB()
-	if err != nil {
-		return err
-	}
-	defer sql.Close()
-	DB = db
 
 	return err
 }
