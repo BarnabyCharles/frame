@@ -4,6 +4,7 @@ go 1.22.1
 
 require (
 	github.com/ghodss/yaml v1.0.0
+	github.com/go-redis/redis/v8 v8.11.5
 	github.com/nacos-group/nacos-sdk-go v1.1.4
 	github.com/spf13/viper v1.18.2
 	gorm.io/driver/mysql v1.5.6
@@ -13,6 +14,8 @@ require (
 require (
 	github.com/aliyun/alibaba-cloud-sdk-go v1.61.1800 // indirect
 	github.com/buger/jsonparser v1.1.1 // indirect
+	github.com/cespare/xxhash/v2 v2.1.2 // indirect
+	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
 	github.com/fsnotify/fsnotify v1.7.0 // indirect
 	github.com/go-errors/errors v1.0.1 // indirect
 	github.com/go-sql-driver/mysql v1.7.0 // indirect
