@@ -9,7 +9,7 @@ type AppConfig struct {
 	} `json:"Etcd"`
 	Mysql MysqlConfig `yaml:"Mysql" mapstructure:"Mysql"`
 	Nacos NacosConfig `yaml:"Nacos" json:"Nacos" mapstructure:"Nacos"`
-	Redis RedisConfig `json:"Redis" mapstruture:"Redis"`
+	Redis RedisConfig `json:"RedisInfo" mapstruture:"Redis"`
 }
 
 type MysqlConfig struct {
@@ -22,7 +22,8 @@ type MysqlConfig struct {
 
 type RedisConfig struct {
 	Host string `json:"host" yaml:"host" mapstruture:"host"`
-	Port int    `json:"port" yaml:"port" mapstruture:"port"`
+	Port string `json:"port" yaml:"port" mapstruture:"port"`
+	DB   int64  `json:"db" yaml:"db"`
 }
 
 type NacosConfig struct {
