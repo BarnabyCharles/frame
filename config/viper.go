@@ -2,6 +2,7 @@ package config
 
 import (
 	"errors"
+	"fmt"
 
 	"github.com/spf13/viper"
 )
@@ -18,4 +19,14 @@ func InitViper(fileName, filePath, fileType string) (*viper.Viper, error) {
 	}
 
 	return v, nil
+}
+
+func ViperInit(Address string) error {
+	viper.SetConfigFile(Address)
+	err := viper.ReadInConfig()
+	if err != nil {
+
+		return fmt.Errorf("nacos配置读取失败，Error:" + err.Error())
+	}
+	return nil
 }
