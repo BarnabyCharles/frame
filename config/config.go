@@ -10,6 +10,7 @@ type AppConfig struct {
 	Mysql MysqlConfig `yaml:"Mysql" mapstructure:"Mysql"`
 	Nacos NacosConfig `yaml:"Nacos" json:"Nacos" mapstructure:"Nacos"`
 	Redis RedisConfig `json:"Redis" mapstruture:"Redis"`
+	Es    EsConfig    `json:"Es" mapstruture:"Es"`
 }
 
 type MysqlConfig struct {
@@ -31,4 +32,8 @@ type NacosConfig struct {
 	ServerName  string `json:"ServerName" yaml:"ServerName" mapstructure:"ServerName"`
 	Group       string `json:"Group" yaml:"Group" mapstructure:"Group"`
 	NamespaceId string `json:"NamespaceId" mapstructure:"NamespaceId"`
+}
+
+type EsConfig struct {
+	Url string `json:"Url" yaml:"Url" mapstructure:"Url"`
 }
