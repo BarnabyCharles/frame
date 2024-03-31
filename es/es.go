@@ -11,27 +11,30 @@ import (
 	"github.com/ghodss/yaml"
 )
 
-func ConnectionEs(serverName, group string) (*elasticsearch.Client, error) {
+var connectionEs *elasticsearch.Client
+
+func ConnectionEs(serverName, group string) error {
 	nacos, err := config.GetNacosConfig(serverName, group)
 	if err != nil {
-		return nil, err
+		return err
 	}
 	var esConfig config.AppConfig
 	err = yaml.Unmarshal([]byte(nacos), &esConfig)
 
 	if err != nil {
-		return nil, errors.New("将yaml文件转换为结构体格式失败！" + err.Error())
+		return errors.New("将yaml文件转换为结构体格式失败！" + err.Error())
 	}
-	return elasticsearch.NewClient(elasticsearch.Config{
+
+	connectionEs, err = elasticsearch.NewClient(elasticsearch.Config{
 		Addresses: []string{esConfig.Es.Url},
 	})
+	if err != nil {
+		return errors.New("链接es失败" + err.Error())
+	}
+	return nil
 }
 
-func InsertGoods(serverName, group, index, docID string, doc map[string]interface{}) error {
-	connectionEs, err := ConnectionEs(serverName, group)
-	if err != nil {
-		return err
-	}
+func InsertGoods(index, docID string, doc map[string]interface{}) error {
 
 	body, err := json.Marshal(doc)
 	if err != nil {
@@ -59,11 +62,7 @@ func InsertGoods(serverName, group, index, docID string, doc map[string]interfac
 }
 
 // todo:获取商品数据根据id
-func GetGoodsById(serverName, group, docID, index string) (map[string]interface{}, error) {
-	connectionEs, err := ConnectionEs(serverName, group)
-	if err != nil {
-		return nil, err
-	}
+func GetGoodsById(docID, index string) (map[string]interface{}, error) {
 
 	req := esapi.GetRequest{
 		Index:      index,
@@ -88,11 +87,8 @@ func GetGoodsById(serverName, group, docID, index string) (map[string]interface{
 	return doc, err
 }
 
-func GetGoodsByName(serverName, group, index, goodsName string) (map[string]interface{}, error) {
-	connectionEs, err := ConnectionEs(serverName, group)
-	if err != nil {
-		return nil, err
-	}
+func GetGoodsByName(index, goodsName string) (map[string]interface{}, error) {
+
 	query := map[string]interface{}{
 		"query": map[string]interface{}{
 			"match": map[string]interface{}{
