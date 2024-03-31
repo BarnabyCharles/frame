@@ -35,7 +35,6 @@ func ConnectionEs(serverName, group string) error {
 }
 
 func InsertGoods(index, docID string, doc map[string]interface{}) error {
-
 	body, err := json.Marshal(doc)
 	if err != nil {
 		return err
@@ -61,9 +60,8 @@ func InsertGoods(index, docID string, doc map[string]interface{}) error {
 	return nil
 }
 
-// todo:获取商品数据根据id
+// 获取商品数据根据id
 func GetGoodsById(docID, index string) (map[string]interface{}, error) {
-
 	req := esapi.GetRequest{
 		Index:      index,
 		DocumentID: docID,
@@ -87,9 +85,10 @@ func GetGoodsById(docID, index string) (map[string]interface{}, error) {
 	return doc, err
 }
 
-func GetGoodsByName(index, goodsName string) (map[string]interface{}, error) {
-
+func GetGoodsByName(index, goodsName, from, size string) (map[string]interface{}, error) {
 	query := map[string]interface{}{
+		"from": from,
+		"size": size,
 		"query": map[string]interface{}{
 			"match": map[string]interface{}{
 				"title": goodsName,
@@ -122,5 +121,3 @@ func GetGoodsByName(index, goodsName string) (map[string]interface{}, error) {
 	}
 	return r, nil
 }
-
-// 更新数据
