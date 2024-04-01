@@ -34,7 +34,7 @@ func ConnectionEs(serverName, group string) error {
 	return nil
 }
 
-func InsertGoods(index, docID string, doc map[string]interface{}) error {
+func InsertDataToEs(index, docID string, doc map[string]interface{}) error {
 	body, err := json.Marshal(doc)
 	if err != nil {
 		return err
@@ -60,8 +60,7 @@ func InsertGoods(index, docID string, doc map[string]interface{}) error {
 	return nil
 }
 
-// 获取商品数据根据id
-func GetGoodsById(docID, index string) (map[string]interface{}, error) {
+func GetDataByIdFromEs(docID, index string) (map[string]interface{}, error) {
 	req := esapi.GetRequest{
 		Index:      index,
 		DocumentID: docID,
@@ -85,7 +84,7 @@ func GetGoodsById(docID, index string) (map[string]interface{}, error) {
 	return doc, err
 }
 
-func GetGoodsByName(index, goodsName, from, size string) (map[string]interface{}, error) {
+func GetDataByNameFromEs(index, goodsName, from, size string) (map[string]interface{}, error) {
 	query := map[string]interface{}{
 		"from": from,
 		"size": size,
@@ -101,20 +100,17 @@ func GetGoodsByName(index, goodsName, from, size string) (map[string]interface{}
 		return nil, err
 	}
 
-	// 创建 Elasticsearch 查询请求
 	req := esapi.SearchRequest{
 		Index: []string{index},
 		Body:  &buf,
 	}
 
-	// 发送查询请求
 	res, err := req.Do(context.Background(), connectionEs)
 	if err != nil {
 		return nil, err
 	}
 	defer res.Body.Close()
 
-	// 处理响应
 	var r map[string]interface{}
 	if err := json.NewDecoder(res.Body).Decode(&r); err != nil {
 		return nil, err
