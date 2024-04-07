@@ -120,7 +120,7 @@ func GetDataByNameFromEs(index, goodsName, from, size string) (map[string]interf
 	return r, nil
 }
 
-func GetDataByNamesFromEs(index, content, from, size string) (map[string]interface{}, error) {
+func GetDataByNamesFromEs(index, content string, from, size int) (map[string]interface{}, error) {
 	query := map[string]interface{}{
 		"from": from,
 		"size": size,
