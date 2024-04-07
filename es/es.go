@@ -126,7 +126,7 @@ func GetDataByNamesFromEs(index, content string, from, size int) (map[string]int
 		"size": size,
 		"query": map[string]interface{}{
 			"match": map[string]interface{}{
-				"Content": content,
+				"content": content,
 			},
 		},
 	}
