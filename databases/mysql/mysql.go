@@ -3,10 +3,16 @@ package mysql
 import (
 	"errors"
 	"fmt"
-	"github.com/BarnabyCharles/frame/config"
+	"log"
+	"os"
+	"time"
+
 	"github.com/ghodss/yaml"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
+
+	"github.com/BarnabyCharles/frame/config"
 )
 
 var DB *gorm.DB
@@ -30,7 +36,20 @@ func InitMysql(serverName, group string) error {
 		mysqConfig.Mysql.Port,
 		mysqConfig.Mysql.Database,
 	)
-	DB, err = gorm.Open(mysql.Open(dsn))
+
+	newLogger := logger.New(
+		log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer
+		logger.Config{
+			SlowThreshold:             time.Second, // Slow SQL threshold
+			LogLevel:                  logger.Info, // Log level
+			IgnoreRecordNotFoundError: true,        // Ignore ErrRecordNotFound error for logger
+			ParameterizedQueries:      true,        // Don't include params in the SQL log
+			Colorful:                  true,        // Disable color
+		},
+	)
+	DB, err = gorm.Open(mysql.Open(dsn), &gorm.Config{
+		Logger: newLogger,
+	})
 	if err != nil {
 		return errors.New("连接数据库失败！" + err.Error())
 	}
