@@ -7,10 +7,11 @@ type AppConfig struct {
 		Hosts []string `json:"Hosts"`
 		Key   string   `json:"Key"`
 	} `json:"Etcd"`
-	Mysql MysqlConfig `yaml:"Mysql" mapstructure:"Mysql"`
-	Nacos NacosConfig `yaml:"Nacos" json:"Nacos" mapstructure:"Nacos"`
-	Redis RedisConfig `json:"RedisInfo" mapstruture:"Redis"`
-	Es    EsConfig    `json:"Es" mapstruture:"Es"`
+	Mysql      MysqlConfig `yaml:"Mysql" mapstructure:"Mysql"`
+	Nacos      NacosConfig `yaml:"Nacos" json:"Nacos" mapstructure:"Nacos"`
+	Redis      RedisConfig `json:"RedisInfo" mapstruture:"Redis"`
+	Es         EsConfig    `json:"Es" mapstruture:"Es"`
+	EsDiscover EsConfig    `json:"EsDiscover" mapstruture:"EsDiscover"`
 }
 
 type MysqlConfig struct {
