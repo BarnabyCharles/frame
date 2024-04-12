@@ -5,10 +5,12 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"github.com/BarnabyCharles/frame/config"
+
 	"github.com/elastic/go-elasticsearch/v8"
 	"github.com/elastic/go-elasticsearch/v8/esapi"
 	"github.com/ghodss/yaml"
+
+	"github.com/BarnabyCharles/frame/config"
 )
 
 var connectionEs *elasticsearch.Client

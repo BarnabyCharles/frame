@@ -20,6 +20,8 @@ func Init(ServerName, group, NamespaceId, host string, port int, str ...string) 
 			err = mysql.InitMysql(ServerName, group)
 		case "es":
 			err = es.ConnectionEs(ServerName, group)
+		case "esDiscover":
+			err = es.ConnectionEsDiscover(ServerName, group)
 		}
 	}
 	return err
