@@ -5,7 +5,6 @@ import (
 	"github.com/BarnabyCharles/frame/config"
 	"github.com/ghodss/yaml"
 	"github.com/go-redis/redis/v8"
-
 	"github.com/spf13/viper"
 	"strconv"
 	"time"
@@ -88,6 +87,41 @@ func KeyDelete(address, key string) error {
 		return "", err
 	})
 
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func Lock(address, key string, val interface{}, duration time.Duration, isReadOnly bool) (bool, error) {
+	res := false
+	WithRedis(address, func(cli *redis.Client) (string, error) {
+		if !isReadOnly {
+			for {
+				result, err := cli.SetNX(context.Background(), key, val, duration).Result()
+				if err != nil {
+					return "", err
+				}
+				res = true
+				if result {
+					return "", nil
+				}
+			}
+		}
+		re, err := cli.SetNX(context.Background(), key, val, duration).Result()
+		res = re
+		if err != nil {
+			return "", err
+		}
+		return "", nil
+	})
+	return res, nil
+}
+
+func UnLock(address, key string) error {
+	_, err := WithRedis(address, func(cli *redis.Client) (string, error) {
+		return "", cli.Del(context.Background(), key).Err()
+	})
 	if err != nil {
 		return err
 	}
